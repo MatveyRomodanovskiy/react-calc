@@ -1,10 +1,12 @@
 // eslint-disable-next-line no-unused-vars
 import React, {useState, useRef} from "react";
 import Buttons from "./Buttons";
-import Table from "./Table";
+import CustomTable from "./CustomTable.jsx";
 import {Calculator} from "./Calculator";
 import {parseInput} from "./utils.js";
+import TextField from "@mui/material/TextField";
 import "./App.css";
+import { Box } from "@mui/material";
 
 
 const App = () => {
@@ -60,23 +62,55 @@ const App = () => {
 
 
     return (
-        <div>
-            <div id="input-container">
-                <input
-                    type="text"
-                    id="input"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="Enter a number"
-                />
-            </div>
+        <Box
+            sx={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                minHeight: '100vh',
+                width: 400,          // Задаём фикс. ширину или maxWidth: 400
+                margin: "0 auto",    // Чтобы контейнер располагался по центру страницы
+                display: "flex",
+                flexDirection: "column",
+            }}
+        >
+            <TextField
+                variant="outlined"
+                label="Enter a number"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                // цвет и стили
+                color="primary"
+                sx={{
+                    width: "100%",
+                    // Если хотите белый фон (по умолчанию TextField - белый),
+                    // можно явно указать:
+                    backgroundColor: "white",
+
+                    // Уточняем цвет бордера в разных состояниях:
+                    "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                            borderColor: "primary.main", // основной цвет (синий)
+                        },
+                        "&:hover fieldset": {
+                            borderColor: "primary.dark",
+                        },
+                        "&.Mui-focused fieldset": {
+                            borderColor: "primary.dark",
+                        },
+                    },
+                }}
+            />
+        <br/>
             <Buttons
                 buttonData={calculator.current.getActions()}
                 onButtonClick={handleButtonClick}
+
             />
-            <Table rows={rows}/>
-        </div>
+
+            <CustomTable rows={rows} />
+        </Box>
     );
 };
+
 
 export default App;
